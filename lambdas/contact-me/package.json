@@ -5,8 +5,5 @@
   "main": "index.js",
   "scripts": {
     "zip": "zip -r ../../dist/contact-lambda.zip ."
-  },
-  "dependencies": {
-    "aws-sdk": "^2.1360.0"
   }
 }
