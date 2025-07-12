@@ -1,0 +1,11 @@
+{
+  "name": "portfolio-backend",
+  "private": true,
+  "workspaces": [
+    "contact"
+  ],
+  "scripts": {
+    "build:contact": "cd contact && npm install && npm run zip",
+    "build:all": "npm run build:contact"
+  }
+}
