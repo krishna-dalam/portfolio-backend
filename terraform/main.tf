@@ -4,7 +4,7 @@ provider "aws" {
 
 # IAM Role for Lambda
 resource "aws_iam_role" "lambda_exec" {
-  name = "contact_lambda_role"
+  name = "contact_form_lambda_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
