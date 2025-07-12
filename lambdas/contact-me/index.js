@@ -1,4 +1,4 @@
-const AWS = require('aws-sdk');
+const AWS = require('@aws-sdk/client-ses');
 const ses = new AWS.SES({ region: 'ap-south-1' });
 
 exports.handler = async (event) => {
