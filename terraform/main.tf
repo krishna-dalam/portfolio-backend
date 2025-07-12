@@ -53,7 +53,7 @@ resource "aws_lambda_function" "contact_me_lambda" {
   filename      = data.archive_file.contact_me_lambda_zip.output_path
   source_code_hash = data.archive_file.contact_me_lambda_zip.output_base64sha256
   handler       = "index.handler"
-  runtime       = "nodejs18.x"
+  runtime       = "nodejs20.x"
   role          = aws_iam_role.lambda_exec.arn
 
   environment {
@@ -63,6 +63,25 @@ resource "aws_lambda_function" "contact_me_lambda" {
     }
   }
 }
+
+resource "aws_iam_policy" "ses_policy" {
+  name = "lambda-ses-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "ses:SendEmail",
+          "ses:SendRawEmail"
+        ],
+        Effect   = "Allow",
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 
 # API Gateway
 resource "aws_apigatewayv2_api" "api" {
