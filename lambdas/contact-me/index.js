@@ -1,23 +1,42 @@
-const AWS = require('@aws-sdk/client-ses');
-const ses = new AWS.SES({ region: 'ap-south-1' });
+// index.js
 
-exports.handler = async (event) => {
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+
+const ses = new SESClient({ region: process.env.AWS_REGION || "ap-south-1" });
+
+export const handler = async (event) => {
   const { name, email, message } = JSON.parse(event.body);
 
   const params = {
-    Destination: { ToAddresses: ['${emailRecipient}'] },
-    Message: {
-      Body: { Text: { Data: `From: ${name} <${email}>\n\n${message}` } },
-      Subject: { Data: 'Portfolio Contact Form' }
+    Source: process.env.EMAIL_SENDER,
+    Destination: {
+      ToAddresses: [process.env.EMAIL_RECIPIENT],
     },
-    Source: '${emailSender}'
+    Message: {
+      Subject: {
+        Data: `New message from ${name}`,
+      },
+      Body: {
+        Text: {
+          Data: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+        },
+      },
+    },
   };
 
-  await ses.sendEmail(params).promise();
+  try {
+    const command = new SendEmailCommand(params);
+    await ses.send(command);
 
-  return {
-    statusCode: 200,
-    headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: 'Email sent' })
-  };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Email sent successfully" }),
+    };
+  } catch (err) {
+    console.error("Error sending email:", err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Failed to send email" }),
+    };
+  }
 };
