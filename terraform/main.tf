@@ -112,7 +112,7 @@ terraform {
   backend "s3" {
     bucket         = "tfstate-bucket"
     key            = "contact-me-form/terraform.tfstate"
-    region         = "ap-south-1"
+    region         = "us-east-1"
     encrypt        = true
   }
 }
