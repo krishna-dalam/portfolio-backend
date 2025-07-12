@@ -52,7 +52,7 @@ resource "aws_lambda_function" "contact_me_lambda" {
   function_name = "contact-me-form-handler"
   filename      = data.archive_file.contact_me_lambda_zip.output_path
   source_code_hash = data.archive_file.contact_me_lambda_zip.output_base64sha256
-  handler       = "contact-me-lambda.handler"
+  handler       = "index.handler"
   runtime       = "nodejs18.x"
   role          = aws_iam_role.lambda_exec.arn
 
