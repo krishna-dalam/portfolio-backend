@@ -2,13 +2,6 @@ provider "aws" {
   region = var.region
 }
 
-# S3 for maintaining tfstate
-
-resource "aws_s3_bucket" "tfstate" {
-  bucket = "tfstate-bucket"
-  force_destroy = true
-}
-
 # IAM Role for Lambda
 resource "aws_iam_role" "lambda_exec" {
   name = "contact_form_lambda_role"
@@ -106,14 +99,5 @@ resource "aws_apigatewayv2_stage" "stage" {
   api_id      = aws_apigatewayv2_api.api.id
   name        = "$default"
   auto_deploy = true
-}
-
-terraform {
-  backend "s3" {
-    bucket         = "tfstate-bucket"
-    key            = "contact-me-form/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-  }
 }
 
