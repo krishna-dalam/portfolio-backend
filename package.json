@@ -1,6 +1,7 @@
 {
   "name": "portfolio-backend",
   "private": true,
+  "type": "module",
   "workspaces": [
     "contact"
   ],
