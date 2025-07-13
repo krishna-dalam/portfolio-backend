@@ -120,3 +120,18 @@ resource "aws_apigatewayv2_stage" "stage" {
   auto_deploy = true
 }
 
+# Store tf state in S3
+
+resource "aws_s3_bucket" "tfstate" {
+  bucket = "portfolio-backend-tfstate-bucket"
+  force_destroy = true
+}
+
+resource "aws_s3_bucket_versioning" "versioning" {
+  bucket = aws_s3_bucket.tfstate.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+
